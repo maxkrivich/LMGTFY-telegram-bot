@@ -1,0 +1,26 @@
+service: lmgt4u-telegram
+frameworkVersion: '>=1.28.0 <2.0.0'
+
+provider:
+  name: aws
+  runtime: go1.x
+  stage: prod
+  region: eu-west-2
+  environment:
+    LMGTFY_ACCESS_TOKEN: ${env:LMGTFY_ACCESS_TOKEN}
+
+
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+
+functions:
+  bot:
+    handler: bin/bot
+    events:
+      - http:
+          path: webhook
+          method: post
+          cors: true
